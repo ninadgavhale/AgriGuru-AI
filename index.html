@@ -1,0 +1,1103 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#174d32">
+<title>AgriGuru AI | Smarter farming</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --forest:#174d32;
+  --forest-dark:#103b27;
+  --leaf:#367c4c;
+  --leaf-light:#e8f1e5;
+  --cream:#f7f6ef;
+  --paper:#fffefa;
+  --ink:#1c2d23;
+  --muted:#66746a;
+  --line:#e1e7dc;
+  --shadow:0 12px 35px rgba(30,58,39,.08);
+  --radius:22px;
+}
+
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:"DM Sans","Noto Sans Devanagari",sans-serif;
+  line-height:1.55;
+}
+button,input,select { font:inherit; }
+button { cursor:pointer; }
+a { color:inherit; text-decoration:none; }
+[hidden] { display:none !important; }
+
+.wrap {
+  width:min(1180px,calc(100% - 40px));
+  margin-inline:auto;
+}
+
+.topbar {
+  background:rgba(255,254,250,.96);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner {
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+.brand { display:flex; align-items:center; gap:12px; }
+.brand-mark {
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  background:var(--leaf-light);
+  border-radius:15px;
+  font-size:27px;
+}
+.brand-name {
+  font-family:Manrope,sans-serif;
+  font-weight:800;
+  letter-spacing:-1px;
+  font-size:25px;
+  color:var(--forest);
+}
+.brand-tag { font-size:12px; color:var(--muted); }
+.navlinks { display:flex; align-items:center; gap:8px; }
+.navlinks a {
+  padding:10px 14px;
+  border-radius:12px;
+  color:#405246;
+  font-size:14px;
+  font-weight:600;
+}
+.navlinks a:hover { background:var(--leaf-light); }
+
+.hero {
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(110deg,#e8f0d9,#f6edce 52%,#d9e8c8);
+  border-bottom:1px solid #dce5d4;
+}
+.hero-inner {
+  display:grid;
+  grid-template-columns:1.3fr .7fr;
+  align-items:center;
+  gap:42px;
+  padding:54px 0 48px;
+}
+.eyebrow {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--forest);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.eyebrow-dot {
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--leaf);
+}
+h1,h2,h3,p { margin-top:0; }
+h1 {
+  font:800 clamp(38px,5vw,62px)/1.08 Manrope,sans-serif;
+  letter-spacing:-2.6px;
+  color:#173e2b;
+  margin:15px 0 18px;
+}
+.hero-copy {
+  font-size:18px;
+  color:#465b4a;
+  max-width:610px;
+  margin-bottom:24px;
+}
+.hero-points { display:flex; flex-wrap:wrap; gap:10px 22px; }
+.hero-point {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:13px;
+  font-weight:700;
+  color:#34533d;
+}
+.point-icon {
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.7);
+  font-size:17px;
+}
+
+.hero-art {
+  min-height:245px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.sun {
+  position:absolute;
+  width:168px;
+  height:168px;
+  border-radius:50%;
+  background:#f0d184;
+  right:40px;
+  top:0;
+}
+.field {
+  position:absolute;
+  bottom:5px;
+  width:100%;
+  height:140px;
+  background:linear-gradient(170deg,#9dbb6c,#56834a);
+  clip-path:polygon(0 55%,100% 0,100% 100%,0 100%);
+}
+.field.two {
+  bottom:0;
+  height:110px;
+  background:linear-gradient(170deg,#659353,#2e6842);
+  clip-path:polygon(0 25%,100% 48%,100% 100%,0 100%);
+}
+.farmer-card {
+  position:relative;
+  z-index:1;
+  background:rgba(255,254,250,.94);
+  border:1px solid white;
+  border-radius:24px;
+  padding:23px 24px;
+  max-width:270px;
+  box-shadow:var(--shadow);
+  transform:rotate(2deg);
+}
+.farmer-card .leaf-emoji { font-size:33px; }
+.farmer-card blockquote {
+  margin:8px 0 12px;
+  font-size:17px;
+  font-weight:700;
+  color:#254c32;
+}
+.farmer-card small { color:var(--muted); }
+
+/* Authentication */
+
+.auth-wrap {
+  padding:28px 0 18px;
+  max-width:560px;
+}
+.auth-card {
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:26px;
+  box-shadow:var(--shadow);
+}
+.auth-card h2 {
+  font:800 24px Manrope,sans-serif;
+  color:var(--forest);
+  margin:0 0 6px;
+}
+.subtitle { color:var(--muted); font-size:13px; }
+.auth-switch {
+  display:flex;
+  gap:8px;
+  background:#edf3e9;
+  padding:5px;
+  border-radius:12px;
+  margin:18px 0;
+}
+.auth-switch button {
+  flex:1;
+  border:0;
+  border-radius:9px;
+  padding:10px;
+  background:transparent;
+  color:var(--muted);
+  font-weight:700;
+}
+.auth-switch button.active {
+  background:var(--forest);
+  color:white;
+}
+.auth-msg {
+  margin-top:12px;
+  font-size:13px;
+  color:#8e3028;
+}
+.auth-user {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px 15px;
+  margin-top:18px;
+  font-size:13px;
+}
+.auth-user span { color:var(--muted); }
+.logout-btn {
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:7px 12px;
+  background:white;
+  color:var(--forest);
+  font-weight:700;
+}
+
+/* Farming tools */
+
+.tools-shell {
+  position:relative;
+  margin-top:24px;
+}
+.tabs {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  background:var(--paper);
+  padding:8px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+}
+.tab {
+  border:0;
+  border-radius:13px;
+  padding:15px 16px;
+  background:transparent;
+  color:#5d6c61;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.tab .tab-icon { font-size:21px; }
+.tab small {
+  display:block;
+  font-size:11px;
+  font-weight:500;
+}
+.tab[aria-selected="true"] {
+  background:var(--forest);
+  color:white;
+}
+
+.workspace {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-top:18px;
+  align-items:stretch;
+}
+.panel {
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:25px;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+.panel-heading {
+  display:flex;
+  gap:13px;
+  align-items:flex-start;
+  margin-bottom:18px;
+}
+.heading-icon {
+  width:46px;
+  height:46px;
+  flex:0 0 46px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:var(--leaf-light);
+  font-size:23px;
+}
+.panel h2 {
+  font:800 22px/1.25 Manrope,sans-serif;
+  margin:1px 0 5px;
+  color:#203d2a;
+}
+.panel-heading p { font-size:13px; color:var(--muted); margin:0; }
+
+.info {
+  display:flex;
+  gap:10px;
+  background:#edf4e8;
+  border:1px solid #dfead7;
+  color:#425d47;
+  border-radius:13px;
+  padding:12px 14px;
+  font-size:12px;
+  margin-bottom:20px;
+}
+.info strong { color:#284a31; }
+
+.form-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px 14px;
+}
+label {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  font-size:13px;
+  font-weight:700;
+  color:#34463a;
+}
+input,select {
+  width:100%;
+  height:46px;
+  border:1px solid #d5ded2;
+  border-radius:11px;
+  background:white;
+  padding:0 12px;
+  color:var(--ink);
+  outline:none;
+}
+input:focus,select:focus {
+  border-color:#6b9d73;
+  box-shadow:0 0 0 3px rgba(89,144,99,.13);
+}
+.btn {
+  width:100%;
+  min-height:50px;
+  margin-top:21px;
+  border:0;
+  border-radius:13px;
+  background:var(--forest);
+  color:white;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.btn:hover { background:var(--forest-dark); }
+.btn:disabled { opacity:.65; cursor:wait; }
+.btn .arrow { font-size:19px; }
+
+.result-panel {
+  background:linear-gradient(150deg,#f0f5eb,#fbfcf8);
+  border-color:#e2eadc;
+}
+.result-placeholder {
+  min-height:290px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+  color:var(--muted);
+}
+.illustration {
+  width:88px;
+  height:88px;
+  display:grid;
+  place-items:center;
+  border-radius:28px;
+  background:#e3efdc;
+  font-size:42px;
+  margin-bottom:18px;
+}
+.result-placeholder h3 {
+  font:800 18px Manrope,sans-serif;
+  color:#36513a;
+  margin-bottom:7px;
+}
+.result-placeholder p { max-width:270px; font-size:13px; margin:0; }
+.crop-result {
+  display:grid;
+  grid-template-columns:54px 1fr;
+  gap:13px;
+  align-items:center;
+  background:white;
+  border:1px solid #e8ede3;
+  padding:13px;
+  border-radius:15px;
+  margin-bottom:10px;
+}
+.crop-symbol {
+  width:54px;
+  height:54px;
+  border-radius:15px;
+  background:#e9f1e2;
+  display:grid;
+  place-items:center;
+  font-size:25px;
+}
+.crop-name {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-weight:800;
+  font-size:14px;
+}
+.crop-name b { color:var(--forest); }
+.bar {
+  height:7px;
+  background:#e7ece4;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:9px;
+}
+.bar i {
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,#4e8b54,#1f6740);
+  border-radius:99px;
+}
+.result-box {
+  border:1px solid #e4eadd;
+  border-radius:14px;
+  background:white;
+  padding:15px;
+  margin-top:12px;
+}
+.result-box.err {
+  background:#fff0ef;
+  border-color:#f0c8c4;
+  color:#8e3028;
+}
+.result-box .row {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 0;
+  border-top:1px solid #edf0e9;
+  font-size:13px;
+}
+.result-box .row:first-child { border-top:0; }
+.chip {
+  display:inline-flex;
+  padding:5px 10px;
+  border-radius:99px;
+  font-size:11px;
+  font-weight:800;
+  margin:0 5px 8px 0;
+  background:#e0f0e2;
+  color:#245c32;
+}
+.chip.low { background:#fff0d2; color:#805400; }
+.chip.high { background:#e0edf9; color:#245780; }
+
+.note {
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin:20px 0 35px;
+  background:#fff4d9;
+  border:1px solid #f1e2b8;
+  color:#6d5526;
+  padding:16px 18px;
+  border-radius:15px;
+  font-size:12px;
+}
+.note strong {
+  display:block;
+  color:#5b451d;
+  margin-bottom:3px;
+  font-size:13px;
+}
+.preview {
+  display:none;
+  width:100%;
+  max-height:260px;
+  object-fit:contain;
+  background:#f2f5ef;
+  border-radius:14px;
+  margin-top:13px;
+  border:1px solid var(--line);
+}
+footer {
+  background:#123d29;
+  color:#d7e5d7;
+  padding:24px 0;
+}
+.footer-inner {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.footer-brand { font:800 16px Manrope,sans-serif; color:white; }
+footer p { font-size:11px; margin:4px 0 0; color:#b9cdbd; }
+.footer-meta { font-size:11px; color:#b9cdbd; }
+
+@media(max-width:850px) {
+  .hero-inner { grid-template-columns:1fr .65fr; gap:15px; }
+  .hero-art { min-height:220px; }
+  .farmer-card { padding:17px; max-width:235px; }
+  .workspace { grid-template-columns:1fr; }
+  .result-placeholder { min-height:180px; }
+}
+@media(max-width:620px) {
+  .wrap { width:calc(100% - 24px); }
+  .topbar-inner { min-height:72px; }
+  .brand-name { font-size:21px; }
+  .brand-mark { width:40px; height:40px; }
+  .navlinks a { font-size:12px; padding:8px; }
+  .navlinks a:nth-child(n+2) { display:none; }
+  .hero-inner { grid-template-columns:1fr; padding:36px 0 42px; }
+  .hero-art { display:none; }
+  h1 { font-size:39px; letter-spacing:-1.7px; }
+  .hero-copy { font-size:16px; }
+  .hero-points { gap:10px; }
+  .hero-point { font-size:12px; }
+  .tabs { gap:4px; padding:5px; }
+  .tab { padding:12px 5px; flex-direction:column; gap:3px; font-size:12px; }
+  .tab .tab-icon { font-size:20px; }
+  .tab small { font-size:10px; }
+  .panel { padding:18px; border-radius:18px; }
+  .panel h2 { font-size:19px; }
+  .form-grid { gap:13px 10px; }
+  label { font-size:12px; }
+  input,select { height:44px; padding:0 9px; font-size:14px; }
+}
+@media(max-width:380px) {
+  .form-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#" aria-label="AgriGuru AI home">
+      <div class="brand-mark">🌱</div>
+      <div>
+        <div class="brand-name">AgriGuru AI</div>
+        <div class="brand-tag">Smart farming, rooted in local knowledge</div>
+      </div>
+    </a>
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="#tools">Farm tools</a>
+      <a href="#about">About</a>
+      <a href="#how">How it works</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="about">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="eyebrow"><span class="eyebrow-dot"></span> Made for Maharashtra farmers</div>
+      <h1>Good decisions start with healthy soil.</h1>
+      <p class="hero-copy">Simple tools to explore crop options, plan fertilizer use and check leaf health — all in one place.</p>
+      <div class="hero-points">
+        <div class="hero-point"><span class="point-icon">🌾</span> Practical crop guidance</div>
+        <div class="hero-point"><span class="point-icon">🧪</span> Soil-based planning</div>
+        <div class="hero-point"><span class="point-icon">🍃</span> Quick leaf checks</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="sun"></div>
+      <div class="field"></div>
+      <div class="field two"></div>
+      <div class="farmer-card">
+        <span class="leaf-emoji">🌿</span>
+        <blockquote>“ज्ञान, तंत्रज्ञान आणि शेती — एकत्र पुढे.”</blockquote>
+        <small>AgriGuru AI · Smarter farming</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap auth-wrap" id="authGate">
+  <div class="auth-card">
+    <h2 id="authTitle">Welcome to AgriGuru</h2>
+    <p class="subtitle" id="authSubtitle">Sign in to access your farming tools.</p>
+
+    <div class="auth-switch">
+      <button type="button" id="showLogin" class="active">Login</button>
+      <button type="button" id="showRegister">Create account</button>
+    </div>
+
+    <form id="authForm">
+      <div id="nameField" hidden style="margin-bottom:14px">
+        <label>Full name
+          <input id="authName" name="name" autocomplete="name" maxlength="100" placeholder="Your name">
+        </label>
+      </div>
+      <label>Email address
+        <input id="authEmail" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+      </label>
+      <label style="margin-top:14px">Password
+        <input id="authPassword" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" placeholder="At least 8 characters">
+      </label>
+      <button class="btn" id="authSubmit" type="submit">Sign in →</button>
+      <div id="authMsg" class="auth-msg" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<main class="wrap" id="tools" hidden>
+  <div class="auth-user">
+    <div>
+      <strong>AgriGuru account</strong><br>
+      <span id="userStatus">Not signed in</span>
+    </div>
+    <button type="button" class="logout-btn" id="logoutBtn">Sign out</button>
+  </div>
+
+  <div class="tools-shell">
+    <nav class="tabs" role="tablist" aria-label="AgriGuru tools">
+      <button class="tab" role="tab" id="tab-crop" aria-controls="crop" aria-selected="true" data-tab="crop">
+        <span class="tab-icon">🌱</span><span>Crop advice<small>पीक निवड</small></span>
+      </button>
+      <button class="tab" role="tab" id="tab-fert" aria-controls="fert" aria-selected="false" data-tab="fert">
+        <span class="tab-icon">🧪</span><span>Fertilizer<small>खत नियोजन</small></span>
+      </button>
+      <button class="tab" role="tab" id="tab-leaf" aria-controls="leaf" aria-selected="false" data-tab="leaf">
+        <span class="tab-icon">🍃</span><span>Leaf check<small>पान तपासणी</small></span>
+      </button>
+    </nav>
+
+    <section id="crop" class="workspace" role="tabpanel" aria-labelledby="tab-crop">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="heading-icon">🌱</div>
+          <div><h2>Crop recommendation</h2><p>Tell us about your soil and local weather.</p></div>
+        </div>
+        <div class="info"><span>ⓘ</span><div><strong>Quick note</strong><br>This model uses a public benchmark dataset. Enter values on that dataset's scale, not directly from a Soil Health Card in kg/ha.</div></div>
+        <form id="cropForm">
+          <div class="form-grid">
+            <label>Nitrogen (N)<input name="N" type="number" step="any" min="0" value="90" required></label>
+            <label>Phosphorus (P)<input name="P" type="number" step="any" min="0" value="42" required></label>
+            <label>Potassium (K)<input name="K" type="number" step="any" min="0" value="43" required></label>
+            <label>Temperature (°C)<input name="temperature" type="number" step="any" value="21" required></label>
+            <label>Humidity (%)<input name="humidity" type="number" step="any" min="0" max="100" value="82" required></label>
+            <label>Soil pH<input name="ph" type="number" step="any" min="0" max="14" value="6.5" required></label>
+            <label>Rainfall (mm)<input name="rainfall" type="number" step="any" min="0" value="200" required></label>
+          </div>
+          <button class="btn" type="submit">Get crop advice <span class="arrow">→</span></button>
+        </form>
+        <div id="cropOut" class="result-box" hidden aria-live="polite"></div>
+      </div>
+      <div class="panel result-panel">
+        <div class="panel-heading"><div class="heading-icon">📊</div><div><h2>Recommended crops</h2><p>Your model results will appear here.</p></div></div>
+        <div id="cropResults" class="result-placeholder">
+          <div class="illustration">🌾</div><h3>Your field, your next step</h3>
+          <p>Fill in the values and choose “Get crop advice” to see the model's top suggestions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="fert" class="workspace" role="tabpanel" aria-labelledby="tab-fert" hidden>
+      <div class="panel">
+        <div class="panel-heading"><div class="heading-icon">🧪</div><div><h2>Fertilizer planner</h2><p>Start with your soil test and field size.</p></div></div>
+        <div class="info"><span>ⓘ</span><div>Use soil-test values and crop-specific recommendations. Fertilizer needs vary by soil type, season, irrigation and crop variety.</div></div>
+        <form id="fertForm">
+          <div class="form-grid">
+            <label>Crop<select name="crop" id="cropSel" required><option value="">Loading crops…</option></select></label>
+            <label>Field area (acres)<input name="acres" type="number" step="any" min="0.1" value="1" required></label>
+            <label>Soil nitrogen (kg/ha)<input name="N" type="number" step="any" min="0" value="250" required></label>
+            <label>Soil phosphorus (kg/ha)<input name="P" type="number" step="any" min="0" value="15" required></label>
+            <label>Soil potassium (kg/ha)<input name="K" type="number" step="any" min="0" value="300" required></label>
+          </div>
+          <button class="btn" type="submit">Build fertilizer plan <span class="arrow">→</span></button>
+        </form>
+        <div id="fertOut" class="result-box" hidden aria-live="polite"></div>
+      </div>
+      <div class="panel result-panel">
+        <div class="panel-heading"><div class="heading-icon">🌿</div><div><h2>Plan overview</h2><p>Your fertilizer quantities will appear here.</p></div></div>
+        <div id="fertResults" class="result-placeholder">
+          <div class="illustration">🪴</div><h3>Feed the soil, not just the crop</h3>
+          <p>Enter crop, soil N-P-K and acreage to see the plan returned by your backend.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="leaf" class="workspace" role="tabpanel" aria-labelledby="tab-leaf" hidden>
+      <div class="panel">
+        <div class="panel-heading"><div class="heading-icon">🍃</div><div><h2>Leaf disease check</h2><p>Upload a clear photo of one leaf.</p></div></div>
+        <div class="info"><span>ⓘ</span><div>Use daylight, keep the leaf in focus and avoid busy backgrounds. Results are limited to the classes supported by your trained model.</div></div>
+        <form id="leafForm">
+          <label>Choose leaf photo<input name="file" id="file" type="file" accept="image/*" required></label>
+          <img id="preview" class="preview" alt="Preview of selected leaf photo">
+          <button class="btn" type="submit">Check leaf health <span class="arrow">→</span></button>
+        </form>
+        <div id="leafOut" class="result-box" hidden aria-live="polite"></div>
+      </div>
+      <div class="panel result-panel">
+        <div class="panel-heading"><div class="heading-icon">🔎</div><div><h2>Leaf check results</h2><p>Prediction and confidence from your model.</p></div></div>
+        <div id="leafResults" class="result-placeholder">
+          <div class="illustration">🍀</div><h3>Let's take a closer look</h3>
+          <p>Upload a close-up leaf photo to see the model's prediction and other possible matches.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="note" id="how">
+    <span class="note-icon">💡</span>
+    <div><strong>A useful starting point, not the final word</strong>
+    AgriGuru AI is a prototype for learning and research. Crop suggestions are based on a public benchmark, and disease predictions can be wrong. Confirm fertilizer doses and treatment decisions with your local Krishi Vigyan Kendra (KVK) or agriculture officer before acting.</div>
+  </aside>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div><div class="footer-brand">🌱 AgriGuru AI</div><p>Practical technology for better-informed farming.</p></div>
+    <div class="footer-meta">Prototype for educational and research use · Public datasets · Not a replacement for expert advice</div>
+  </div>
+</footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = t => String(t).replace(/[&<>"]/g, c => ({
+  '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'
+}[c]));
+
+let accessToken = sessionStorage.getItem('agriguru_access_token') || '';
+let authMode = 'login';
+
+async function api(path, opts = {}) {
+  const headers = new Headers(opts.headers || {});
+
+  if (accessToken && !['/api/auth/login','/api/auth/register'].includes(path)) {
+    headers.set('Authorization', 'Bearer ' + accessToken);
+  }
+
+  const r = await fetch(path, {...opts, headers});
+  let d = {};
+
+  try { d = await r.json(); } catch (e) {}
+
+  if (!r.ok) {
+    if (r.status === 401 && accessToken && !path.startsWith('/api/auth/')) {
+      signOut(false);
+    }
+
+    let m = d.detail;
+    if (Array.isArray(m)) {
+      m = m.map(x => x.loc[x.loc.length - 1] + ': ' + x.msg).join('; ');
+    }
+
+    throw new Error(m || 'Something went wrong. Please try again.');
+  }
+
+  return d;
+}
+
+function setAuthView(user) {
+  const loggedIn = Boolean(user && accessToken);
+  $('#authGate').hidden = loggedIn;
+  $('#tools').hidden = !loggedIn;
+  $('#userStatus').textContent = loggedIn
+    ? 'Signed in as ' + (user.name || user.email)
+    : 'Not signed in';
+}
+
+function signOut(showMessage = true) {
+  accessToken = '';
+  sessionStorage.removeItem('agriguru_access_token');
+  setAuthView(null);
+
+  if (showMessage) {
+    $('#authMsg').textContent = 'You have signed out.';
+  }
+}
+
+function chooseAuthMode(mode) {
+  authMode = mode;
+  const registering = mode === 'register';
+
+  $('#showLogin').classList.toggle('active', !registering);
+  $('#showRegister').classList.toggle('active', registering);
+  $('#nameField').hidden = !registering;
+  $('#authName').required = registering;
+  $('#authPassword').autocomplete = registering ? 'new-password' : 'current-password';
+  $('#authTitle').textContent = registering ? 'Create your AgriGuru account' : 'Welcome to AgriGuru';
+  $('#authSubtitle').textContent = registering
+    ? 'Create an account to use your farming tools.'
+    : 'Sign in to access your farming tools.';
+  $('#authSubmit').textContent = registering ? 'Create account →' : 'Sign in →';
+  $('#authMsg').textContent = '';
+}
+
+$('#showLogin').addEventListener('click', () => chooseAuthMode('login'));
+$('#showRegister').addEventListener('click', () => chooseAuthMode('register'));
+//$('#logoutBtn').addEventListener('click', () => signOut());
+
+$('#authForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const btn = $('#authSubmit');
+  btn.disabled = true;
+  $('#authMsg').textContent = '';
+
+  try {
+    const email = $('#authEmail').value.trim();
+    const password = $('#authPassword').value;
+
+    if (authMode === 'register') {
+      await api('/api/auth/register', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          name:$('#authName').value.trim(),
+          email,
+          password
+        })
+      });
+    }
+
+    const form = new URLSearchParams({
+      username:email,
+      password
+    });
+
+    const result = await api('/api/auth/login', {
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:form
+    });
+
+    accessToken = result.access_token;
+    sessionStorage.setItem('agriguru_access_token', accessToken);
+
+    const user = await api('/api/auth/me');
+    setAuthView(user);
+    $('#authPassword').value = '';
+    $('#authMsg').textContent = '';
+
+  } catch (err) {
+    $('#authMsg').textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+function out(id, html, isErr = false) {
+  const e = $(id);
+  e.hidden = false;
+  e.className = 'result-box' + (isErr ? ' err' : '');
+  e.innerHTML = html;
+}
+
+async function run(form, outId, fn) {
+  const btn = form.querySelector('.btn');
+  const label = btn.innerHTML;
+
+  btn.disabled = true;
+  btn.textContent = 'Working…';
+
+  try {
+    out(outId, await fn());
+  } catch (e) {
+    out(outId, esc(e.message), true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = label;
+  }
+}
+
+const bar = (name, pct) => {
+  const safePct = Math.max(0, Math.min(100, Number(pct) || 0));
+
+  return `<div class="row"><span>${esc(name)}</span><b>${safePct}%</b></div>
+  <div class="bar"><i style="width:${safePct}%"></i></div>`;
+};
+
+function showResults(id, html) {
+  const el = $(id);
+  el.className = 'result-list';
+  el.innerHTML = html;
+}
+
+/* Navigation */
+
+document.querySelectorAll('.tab').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => {
+      x.setAttribute('aria-selected', String(x === b));
+    });
+
+    ['crop','fert','leaf'].forEach(id => {
+      $('#' + id).hidden = id !== b.dataset.tab;
+    });
+  });
+});
+
+/* Crop recommendation */
+
+$('#cropForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  run(e.target, '#cropOut', async () => {
+    const body = Object.fromEntries(
+      [...new FormData(e.target)].map(([k,v]) => [k, Number(v)])
+    );
+
+    const d = await api('/api/crop', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+
+    if (!Array.isArray(d.top) || !d.top.length) {
+      throw new Error('The model did not return crop suggestions.');
+    }
+
+    showResults('#cropResults', d.top.map((t,i) => `
+      <div class="crop-result">
+        <div class="crop-symbol">${['🌾','🌽','🥜','🌿','🫘'][i%5]}</div>
+        <div>
+          <div class="crop-name">
+            <span>${esc(t.crop)}</span><b>${Number(t.chance)||0}%</b>
+          </div>
+          <div class="bar">
+            <i style="width:${Math.max(0,Math.min(100,Number(t.chance)||0))}%"></i>
+          </div>
+        </div>
+      </div>
+    `).join(''));
+
+    return '<strong>Recommendation ready.</strong><p>Review model suggestions alongside local season, water availability and market demand.</p>';
+  });
+});
+
+/* Fertilizer planning */
+
+$('#fertForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  run(e.target, '#fertOut', async () => {
+    const f = Object.fromEntries(new FormData(e.target));
+    const body = {
+      crop:f.crop,
+      N:+f.N,
+      P:+f.P,
+      K:+f.K,
+      acres:+f.acres
+    };
+
+    const d = await api('/api/fertilizer', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+
+    const chips = Object.entries(d.ratings || {}).map(([n,r]) => {
+      const rating = String(r).toLowerCase();
+      const cls = ['low','high'].includes(rating) ? rating : '';
+      return `<span class="chip ${cls}">${esc(n)}: ${esc(r)}</span>`;
+    }).join('');
+
+    const rows = (d.items || []).map(i => `
+      <div class="row">
+        <span>${esc(i.name)}</span>
+        <span><b>${esc(i.kg)} kg</b> · ${esc(i.bags)} bags</span>
+      </div>
+    `).join('');
+
+    showResults('#fertResults', `
+      <div class="result-box">
+        ${chips}
+        <div><strong>Plan for ${esc(d.acres)} acre(s)</strong></div>
+        ${rows}
+        <p style="font-size:11px;color:#66746a;margin-top:10px">
+          Dose source: ${esc(d.source || 'Not provided')}
+        </p>
+      </div>
+    `);
+
+    return '<strong>Fertilizer plan generated.</strong><p>Please verify doses against a current soil test and local crop guidance.</p>';
+  });
+});
+
+/* Leaf image preview */
+
+$('#file').addEventListener('change', e => {
+  const f = e.target.files[0];
+  const p = $('#preview');
+
+  if (!f) {
+    p.removeAttribute('src');
+    p.style.display = 'none';
+    return;
+  }
+
+  if (!f.type.startsWith('image/')) {
+    e.target.value = '';
+    p.style.display = 'none';
+    return;
+  }
+
+  p.src = URL.createObjectURL(f);
+  p.style.display = 'block';
+});
+
+/* Disease detection */
+
+$('#leafForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  run(e.target, '#leafOut', async () => {
+    const d = await api('/api/disease', {
+      method:'POST',
+      body:new FormData(e.target)
+    });
+
+    const head = d.sure
+      ? `<strong>${esc(d.label)}</strong> <span class="chip">${esc(d.confidence)}% confidence</span>`
+      : '<strong>Prediction uncertain</strong><p>Try a sharper, closer photo of one leaf.</p>';
+
+    const others = (d.others || [])
+      .map(o => bar(o.label, o.confidence))
+      .join('');
+
+    showResults('#leafResults', `<div class="result-box">${head}${others}</div>`);
+
+    return '<strong>Leaf analysis complete.</strong><p>Treat this as a screening result, not a confirmed diagnosis.</p>';
+  });
+});
+
+/* Restore session and load crop list */
+
+if (accessToken) {
+  api('/api/auth/me')
+    .then(user => setAuthView(user))
+    .catch(() => signOut(false));
+} else {
+  setAuthView(null);
+}
+
+api('/api/meta')
+  .then(m => {
+    const crops = Array.isArray(m.crops) ? m.crops : [];
+
+    $('#cropSel').innerHTML = crops.length
+      ? crops.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('')
+      : '<option value="">No crops returned by API</option>';
+  })
+  .catch(() => {
+    $('#cropSel').innerHTML = '<option value="">Could not load crops</option>';
+  });
+</script>
+</body>
+</html>
