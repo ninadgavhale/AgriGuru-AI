@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -271,7 +270,7 @@ h1 {
 }
 .tabs {
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:8px;
   background:var(--paper);
   padding:8px;
@@ -580,6 +579,56 @@ footer p { font-size:11px; margin:4px 0 0; color:#b9cdbd; }
 @media(max-width:380px) {
   .form-grid { grid-template-columns:1fr; }
 }
+
+/* weather + history */
+.wx-now { font-size:15px; margin-bottom:6px; }
+.wx-now b { font-size:34px; color:var(--forest); margin-right:6px; }
+.wx-days { display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:8px; margin:12px 0; }
+.wx-day { border:1px solid var(--line); border-radius:12px; padding:8px; text-align:center; font-size:13px; display:grid; gap:2px; }
+.wx-alert { background:var(--leaf-light); border-radius:12px; padding:10px 12px; font-size:13px; margin-top:8px; }
+.hist-item { display:grid; gap:2px; padding:12px 0; border-top:1px solid #edf0e9; font-size:13px; }
+.hist-item:first-child { border-top:0; }
+.hist-item small { color:var(--muted); }
+@media(max-width:620px) { .tab small { display:none; } .tab { padding-inline:4px; } }
+
+/* ===== App shell: dark-green sidebar + dashboard (after sign-in) ===== */
+body.app .topbar, body.app .hero, body.app footer, body.app #how { display:none; }
+body.app #tools { max-width:none; width:auto; margin:0 0 0 252px; padding:0 26px 40px; }
+body.app .auth-user { margin:0 -26px; border:0; border-bottom:1px solid var(--line); border-radius:0; padding:14px 26px; position:sticky; top:0; z-index:5; }
+body.app .tools-shell { margin-top:0; }
+body.app .tabs { position:fixed; inset:0 auto 0 0; width:252px; display:flex; flex-direction:column; gap:4px; padding:0 12px 16px; border:0; border-radius:0; box-shadow:none; overflow-y:auto; background:linear-gradient(180deg,#0d3a25,#14532d 70%,#1c6b3c); }
+body.app .tab { justify-content:flex-start; text-align:left; padding:13px 14px; color:rgba(255,255,255,.85); }
+body.app .tab:hover { background:rgba(255,255,255,.08); }
+body.app .tab[aria-selected="true"] { background:rgba(255,255,255,.16); color:#fff; box-shadow:inset 3px 0 0 #8fd19e; }
+body.app .tab small { color:rgba(255,255,255,.6); }
+.side-brand { display:flex; align-items:center; gap:10px; padding:22px 6px 18px; color:#fff; }
+.side-brand .logo { font-size:30px; }
+.side-brand b { font-size:20px; display:block; }
+.side-brand em { font-style:normal; color:#8fd19e; }
+.side-brand small { font-size:12px; opacity:.75; }
+.side-quote { margin-top:auto; padding:16px; border-radius:14px; background:rgba(255,255,255,.08); color:#fff; font-weight:700; line-height:1.35; }
+.dash { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:22px; }
+.dash-welcome { grid-column:1/-1; }
+.dash-welcome h2 { font-size:28px; margin:0; color:var(--forest-dark); }
+.dash-welcome h2 span { color:var(--leaf); }
+.dash-welcome p { margin:4px 0 0; color:var(--muted); }
+.dash-actions { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.dash-card { display:flex; align-items:center; gap:14px; text-align:left; border:1px solid var(--line); border-radius:18px; padding:18px; font:inherit; cursor:pointer; color:var(--ink); }
+.dash-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+.dash-card .di { font-size:30px; }
+.dash-card b { display:block; }
+.dash-card small { color:var(--muted); font-size:12.5px; }
+.dash-card i { margin-left:auto; font-style:normal; font-size:20px; color:var(--forest); }
+.c-green { background:#e8f4ea; } .c-amber { background:#fdf1de; } .c-blue { background:#e5f0fb; }
+.linkbtn { background:none; border:0; color:var(--forest); font-weight:700; cursor:pointer; padding:0; margin-top:10px; }
+@media(max-width:900px) {
+  body.app #tools { margin-left:0; padding:0 14px 30px; }
+  body.app .auth-user { margin:0 -14px; padding:12px 14px; }
+  body.app .tabs { position:static; flex-direction:row; overflow-x:auto; padding:8px; border-radius:0 0 14px 14px; }
+  body.app .tab { white-space:nowrap; }
+  body.app .side-brand, body.app .side-quote { display:none; }
+  .dash, .dash-actions { grid-template-columns:1fr; }
+}
 </style>
 </head>
 
@@ -665,7 +714,11 @@ footer p { font-size:11px; margin:4px 0 0; color:#b9cdbd; }
 
   <div class="tools-shell">
     <nav class="tabs" role="tablist" aria-label="AgriGuru tools">
-      <button class="tab" role="tab" id="tab-crop" aria-controls="crop" aria-selected="true" data-tab="crop">
+      <div class="side-brand" role="presentation"><span class="logo">🌿</span><div><b>AgriGuru <em>AI</em></b><small>Smart Farming Assistant</small></div></div>
+      <button class="tab" role="tab" id="tab-dash" aria-controls="dash" aria-selected="true" data-tab="dash">
+        <span class="tab-icon">🏠</span><span>Dashboard<small>मुख्यपृष्ठ</small></span>
+      </button>
+      <button class="tab" role="tab" id="tab-crop" aria-controls="crop" aria-selected="false" data-tab="crop">
         <span class="tab-icon">🌱</span><span>Crop advice<small>पीक निवड</small></span>
       </button>
       <button class="tab" role="tab" id="tab-fert" aria-controls="fert" aria-selected="false" data-tab="fert">
@@ -674,9 +727,38 @@ footer p { font-size:11px; margin:4px 0 0; color:#b9cdbd; }
       <button class="tab" role="tab" id="tab-leaf" aria-controls="leaf" aria-selected="false" data-tab="leaf">
         <span class="tab-icon">🍃</span><span>Leaf check<small>पान तपासणी</small></span>
       </button>
+      <button class="tab" role="tab" id="tab-weather" aria-controls="weather" aria-selected="false" data-tab="weather">
+        <span class="tab-icon">⛅</span><span>Weather<small>हवामान</small></span>
+      </button>
+      <button class="tab" role="tab" id="tab-history" aria-controls="history" aria-selected="false" data-tab="history">
+        <span class="tab-icon">🕘</span><span>History<small>इतिहास</small></span>
+      </button>
+      <div class="side-quote" role="presentation">“Better Farming, Brighter Tomorrow”</div>
     </nav>
 
-    <section id="crop" class="workspace" role="tabpanel" aria-labelledby="tab-crop">
+    <section id="dash" class="dash" role="tabpanel" aria-labelledby="tab-dash">
+      <div class="dash-welcome">
+        <h2>Welcome back, <span id="dashName">farmer</span>!</h2>
+        <p>Get crop recommendations, fertilizer guidance and plant disease detection in one place.</p>
+      </div>
+      <div class="dash-actions">
+        <button type="button" class="dash-card c-green" data-go="crop"><span class="di">🌱</span><span><b>Crop recommendation</b><small>Find the best crop for your soil and climate</small></span><i>→</i></button>
+        <button type="button" class="dash-card c-amber" data-go="fert"><span class="di">🧪</span><span><b>Fertilizer guidance</b><small id="dashFertNote">Plan fertilizer for your field</small></span><i>→</i></button>
+        <button type="button" class="dash-card c-blue" data-go="leaf"><span class="di">🍃</span><span><b>Plant disease detection</b><small>Upload a leaf photo to check it</small></span><i>→</i></button>
+      </div>
+      <div class="panel">
+        <div class="panel-heading"><div class="heading-icon">⛅</div><div><h2>Today's weather</h2><p>Live data from Open-Meteo.</p></div></div>
+        <div id="dashWeather" class="result-placeholder"><p>Loading…</p></div>
+        <button type="button" class="linkbtn" data-go="weather">View forecast →</button>
+      </div>
+      <div class="panel">
+        <div class="panel-heading"><div class="heading-icon">🕘</div><div><h2>Recent activity</h2><p>Your last 5 results.</p></div></div>
+        <div id="dashRecent" class="result-placeholder"><p>Loading…</p></div>
+        <button type="button" class="linkbtn" data-go="history">View all →</button>
+      </div>
+    </section>
+
+    <section id="crop" class="workspace" role="tabpanel" aria-labelledby="tab-crop" hidden>
       <div class="panel">
         <div class="panel-heading">
           <div class="heading-icon">🌱</div>
@@ -734,7 +816,7 @@ footer p { font-size:11px; margin:4px 0 0; color:#b9cdbd; }
     <section id="leaf" class="workspace" role="tabpanel" aria-labelledby="tab-leaf" hidden>
       <div class="panel">
         <div class="panel-heading"><div class="heading-icon">🍃</div><div><h2>Leaf disease check</h2><p>Upload a clear photo of one leaf.</p></div></div>
-        <div class="info"><span>ⓘ</span><div>Use daylight, keep the leaf in focus and avoid busy backgrounds. Results are limited to the classes supported by your trained model.</div></div>
+        <div class="info"><span>ⓘ</span><div>Use daylight, keep the leaf in focus and avoid busy backgrounds. Results are limited to the classes supported by the pretrained model (not trained on local field photos).</div></div>
         <form id="leafForm">
           <label>Choose leaf photo<input name="file" id="file" type="file" accept="image/*" required></label>
           <img id="preview" class="preview" alt="Preview of selected leaf photo">
@@ -748,6 +830,31 @@ footer p { font-size:11px; margin:4px 0 0; color:#b9cdbd; }
           <div class="illustration">🍀</div><h3>Let's take a closer look</h3>
           <p>Upload a close-up leaf photo to see the model's prediction and other possible matches.</p>
         </div>
+      </div>
+    </section>
+
+    <section id="weather" class="workspace" role="tabpanel" aria-labelledby="tab-weather" hidden>
+      <div class="panel">
+        <div class="panel-heading"><div class="heading-icon">⛅</div><div><h2>Weather forecast</h2><p>5-day outlook for your town.</p></div></div>
+        <form id="weatherForm">
+          <div class="form-grid"><label style="grid-column:1/-1">Town or city<input id="weatherCity" value="Jalgaon" maxlength="80" required></label></div>
+          <button class="btn" type="submit">Get forecast <span class="arrow">→</span></button>
+        </form>
+        <div id="weatherOut" class="result-box" hidden aria-live="polite"></div>
+      </div>
+      <div class="panel result-panel">
+        <div class="panel-heading"><div class="heading-icon">🌦️</div><div><h2>Forecast</h2><p>Live data from Open-Meteo.</p></div></div>
+        <div id="weatherResults" class="result-placeholder">
+          <div class="illustration">⛅</div><h3>Plan around the weather</h3>
+          <p>Enter a town and choose “Get forecast”.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="history" class="workspace" role="tabpanel" aria-labelledby="tab-history" style="grid-template-columns:1fr" hidden>
+      <div class="panel">
+        <div class="panel-heading"><div class="heading-icon">🕘</div><div><h2>My history</h2><p>Your last 50 results.</p></div></div>
+        <div id="historyList" class="result-placeholder"><p>Loading…</p></div>
       </div>
     </section>
   </div>
@@ -810,6 +917,11 @@ function setAuthView(user) {
   $('#userStatus').textContent = loggedIn
     ? 'Signed in as ' + (user.name || user.email)
     : 'Not signed in';
+  document.body.classList.toggle('app', loggedIn);
+  if (loggedIn) {
+    $('#dashName').textContent = String(user.name || user.email).split(' ')[0];
+    openTab('dash');
+  }
 }
 
 function signOut(showMessage = true) {
@@ -841,7 +953,7 @@ function chooseAuthMode(mode) {
 
 $('#showLogin').addEventListener('click', () => chooseAuthMode('login'));
 $('#showRegister').addEventListener('click', () => chooseAuthMode('register'));
-//$('#logoutBtn').addEventListener('click', () => signOut());
+$('#logoutBtn').addEventListener('click', () => signOut());
 
 $('#authForm').addEventListener('submit', async e => {
   e.preventDefault();
@@ -931,17 +1043,55 @@ function showResults(id, html) {
 
 /* Navigation */
 
-document.querySelectorAll('.tab').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(x => {
-      x.setAttribute('aria-selected', String(x === b));
-    });
-
-    ['crop','fert','leaf'].forEach(id => {
-      $('#' + id).hidden = id !== b.dataset.tab;
-    });
+function openTab(name) {
+  document.querySelectorAll('.tab').forEach(x => {
+    x.setAttribute('aria-selected', String(x.dataset.tab === name));
   });
+  ['dash','crop','fert','leaf','weather','history'].forEach(id => {
+    $('#' + id).hidden = id !== name;
+  });
+  if (name === 'dash') loadDash();
+  if (name === 'history') loadHistory();
+  window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.tab').forEach(b => {
+  b.addEventListener('click', () => openTab(b.dataset.tab));
 });
+document.querySelectorAll('[data-go]').forEach(b => {
+  b.addEventListener('click', () => openTab(b.dataset.go));
+});
+
+/* Dashboard */
+
+function savedCity() {
+  try { return localStorage.getItem('agriguru_city') || 'Jalgaon'; } catch (e) { return 'Jalgaon'; }
+}
+
+function loadDash() {
+  const w = $('#dashWeather'), r = $('#dashRecent');
+
+  api('/api/weather?city=' + encodeURIComponent(savedCity())).then(d => {
+    w.className = '';
+    w.innerHTML = `<div class="result-box">
+      <div class="wx-now"><b>${Math.round(d.temp)}°C</b> ${esc(d.city)} · ${esc(d.condition)}</div>
+      <div class="row"><span>Humidity</span><b>${esc(d.humidity)}%</b></div>
+      <div class="row"><span>Wind</span><b>${esc(d.wind)} km/h</b></div>
+      <div class="row"><span>Rain chance today</span><b>${esc(d.forecast[0].rain_prob)}%</b></div></div>`;
+  }).catch(e => { w.className = 'result-placeholder'; w.innerHTML = '<p>' + esc(e.message) + '</p>'; });
+
+  api('/api/history').then(rows => {
+    if (!rows.length) {
+      r.className = 'result-placeholder';
+      r.innerHTML = '<p>No activity yet. Try a crop recommendation.</p>';
+      return;
+    }
+    r.className = 'result-list';
+    r.innerHTML = rows.slice(0, 5).map(x => `<div class="hist-item">
+      <small>${esc(new Date(x.date).toLocaleString())}</small>
+      <b>${esc(x.feature)}</b><strong>${esc(x.result)}</strong></div>`).join('');
+  }).catch(e => { r.className = 'result-placeholder'; r.innerHTML = '<p>' + esc(e.message) + '</p>'; });
+}
 
 /* Crop recommendation */
 
@@ -1077,6 +1227,66 @@ $('#leafForm').addEventListener('submit', e => {
   });
 });
 
+/* Weather */
+
+const fmtDay = s => new Date(s + 'T00:00:00').toLocaleDateString(undefined, {weekday:'short', day:'numeric', month:'short'});
+
+$('#weatherForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  run(e.target, '#weatherOut', async () => {
+    const city = $('#weatherCity').value.trim();
+    const d = await api('/api/weather?city=' + encodeURIComponent(city));
+    try { localStorage.setItem('agriguru_city', city); } catch (e) {}
+
+    const days = d.forecast.map(f => `
+      <div class="wx-day"><b>${esc(fmtDay(f.date))}</b>
+        <span>${Math.round(f.max)}° / ${Math.round(f.min)}°</span>
+        <small>Rain ${esc(f.rain_prob)}%</small></div>`).join('');
+
+    const alerts = (d.alerts || []).map(a => `<div class="wx-alert">${esc(a)}</div>`).join('');
+
+    showResults('#weatherResults', `
+      <div class="result-box">
+        <div class="wx-now"><b>${Math.round(d.temp)}°C</b>
+          ${esc(d.city)}${d.region ? ', ' + esc(d.region) : ''} · ${esc(d.condition)}</div>
+        <div class="row"><span>Feels like</span><b>${Math.round(d.feels_like)}°C</b></div>
+        <div class="row"><span>Humidity</span><b>${esc(d.humidity)}%</b></div>
+        <div class="row"><span>Wind</span><b>${esc(d.wind)} km/h</b></div>
+        <div class="row"><span>Pressure</span><b>${Math.round(d.pressure)} hPa</b></div>
+        <div class="wx-days">${days}</div>
+        ${alerts || '<div class="wx-alert">No weather alerts for the next 5 days.</div>'}
+      </div>`);
+
+    return '<strong>Forecast loaded.</strong><p>Alerts come from simple rules on the forecast numbers, not expert advice.</p>';
+  });
+});
+
+/* History */
+
+async function loadHistory() {
+  const box = $('#historyList');
+  try {
+    const rows = await api('/api/history');
+    if (!rows.length) {
+      box.className = 'result-placeholder';
+      box.innerHTML = '<p>No activity yet. Run a crop, fertilizer or leaf check and it will appear here.</p>';
+      return;
+    }
+    box.className = 'result-list';
+    box.innerHTML = rows.map(r => `
+      <div class="hist-item">
+        <small>${esc(new Date(r.date).toLocaleString())}</small>
+        <b>${esc(r.feature)}</b>
+        <span>${esc(r.inputs)}</span>
+        <strong>${esc(r.result)}</strong>
+      </div>`).join('');
+  } catch (err) {
+    box.className = 'result-placeholder';
+    box.innerHTML = '<p>' + esc(err.message) + '</p>';
+  }
+}
+
 /* Restore session and load crop list */
 
 if (accessToken) {
@@ -1091,9 +1301,14 @@ api('/api/meta')
   .then(m => {
     const crops = Array.isArray(m.crops) ? m.crops : [];
 
-    $('#cropSel').innerHTML = crops.length
-      ? crops.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('')
-      : '<option value="">No crops returned by API</option>';
+    if (m.fertilizer_ready === false || !crops.length) {
+      $('#dashFertNote').textContent = 'Not available yet';
+      $('#cropSel').innerHTML = '<option value="">Not available yet</option>';
+      $('#fertForm .btn').disabled = true;
+      out('#fertOut', 'The fertilizer planner is not enabled yet. It needs crop doses from an official source (MPKV Rahuri or your KVK) before it can give advice.', true);
+      return;
+    }
+    $('#cropSel').innerHTML = crops.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
   })
   .catch(() => {
     $('#cropSel').innerHTML = '<option value="">Could not load crops</option>';

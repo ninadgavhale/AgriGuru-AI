@@ -1,7 +1,7 @@
 # Fertilizer calculation engine (no machine learning, just agronomy arithmetic)
 #
-# IMPORTANT: DOSES and ADJUST hold PLACEHOLDER numbers.
-# Replace them with values from MPKV Rahuri / your KVK / the Maharashtra
+# IMPORTANT: ADJUST holds PLACEHOLDER numbers and DOSES is empty.
+# Fill them with values from MPKV Rahuri / your KVK / the Maharashtra
 # agriculture department, and write the source next to each one.
 
 ACRE_PER_HECTARE = 2.471
@@ -14,13 +14,12 @@ LIMITS = {"N": (280, 560), "P": (10, 25), "K": (120, 280)}
 ADJUST = {"low": 1.25, "medium": 1.0, "high": 0.75}
 
 # Recommended dose in kg/ha of N, P2O5, K2O for each crop.
+# LEFT EMPTY ON PURPOSE: add only values copied from an official source
+# (MPKV Rahuri package of practices, your KVK, or the Maharashtra agriculture
+# department) and write that source on the entry. While this is empty the app
+# shows the fertilizer tab as "not available yet" instead of inventing numbers.
 DOSES = {
-    "Example crop (placeholder)": {
-        "N": 100, "P2O5": 50, "K2O": 50,
-        "source": "PLACEHOLDER - replace with a real recommendation",
-    },
-    # "Cotton": {"N": ..., "P2O5": ..., "K2O": ..., "source": "who, where, year"},
-    # "Soybean": {...},
+    # "Soybean": {"N": 0, "P2O5": 0, "K2O": 0, "source": "who published it, which document, year"},
 }
 
 # Fertilizer contents (standard)
@@ -53,9 +52,9 @@ def fertilizer_plan(dose, soil):
     need_p = dose["P2O5"] * ADJUST[ratings["P"]]
     need_k = dose["K2O"] * ADJUST[ratings["K"]]
 
-    dap = need_p / DAP_P2O5                         # DAP supplies the phosphorus
-    n_from_dap = dap * DAP_N                        # and some nitrogen too
-    urea = max(need_n - n_from_dap, 0) / UREA_N     # urea covers the rest of the nitrogen
+    dap = need_p / DAP_P2O5                         
+    n_from_dap = dap * DAP_N                        
+    urea = max(need_n - n_from_dap, 0) / UREA_N     
     mop = need_k / MOP_K2O
 
     per_ha = {"Urea": urea, "DAP": dap, "MOP": mop}

@@ -6,9 +6,11 @@ pillow
 python-multipart
 transformers
 torch
-scikit-learn
+scikit-learn==1.7.2
 SQLAlchemy>=2.0
-psycopg[binary]
-pwdlib[argon2]
-python-jose[cryptography]
+bcrypt
+PyJWT
+python-dotenv
 email-validator
+requests
+ 
