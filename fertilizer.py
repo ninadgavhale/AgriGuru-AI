@@ -1,26 +1,15 @@
-# Fertilizer calculation engine (no machine learning, just agronomy arithmetic)
-#
-# All numbers below carry a source. Add more crops only from official documents,
-# and write the source on each entry.
+
 
 ACRE_PER_HECTARE = 2.471
-BAG_KG = 50                      # one fertilizer bag = 50 kg
+BAG_KG = 50                     
 
-# Soil Health Card ratings in kg/ha: (below first = low, above second = high)
-# Source: ICAR-IISS, Harit Dhara 4(1) 2021, Table 1 (N 280-560, P 10-25, K 120-280).
+
 LIMITS = {"N": (280, 560), "P": (10, 25), "K": (120, 280)}
 
-# Dose change for each soil rating. Source: ICAR, Indian Farming (March 2020),
-# "Fertilizer recommendations": in low or high fertility categories the
-# general recommended dose is raised or lowered by 25%; medium = unchanged.
-# NOTE: this is the general ICAR rule applied to each nutrient separately.
-# Confirm with your KVK / MPKV if a crop-specific rule overrides it.
+
 ADJUST = {"low": 1.25, "medium": 1.0, "high": 0.75}
 
-# Recommended dose in kg/ha of N, P2O5, K2O for each crop.
-# Every entry must carry its source. Only add values copied from an official
-# document (MPKV Rahuri, your KVK, or the Maharashtra agriculture department).
-# Doses are zone/season specific: the "source" text says where each applies.
+
 DOSES = {
     "Wheat": {"N": 120, "P2O5": 60, "K2O": 40,
               "source": "MPKV Rahuri, Agricultural Research Recommendations 2025 (item 11): "
